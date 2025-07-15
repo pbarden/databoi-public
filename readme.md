@@ -76,3 +76,5 @@ results = databoi.mde_time_table(summary, total_weeks=6)
 
 print("Week-by-week MDE values:")
 print(results["weekly_mdes"])
+
+(C) Copyright 2025 Paul Barden
