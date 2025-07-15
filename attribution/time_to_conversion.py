@@ -8,7 +8,7 @@ def time_to_conversion(
     field_map_df: pd.DataFrame,
     start_date: datetime,
     end_date: datetime,
-    conversion_field: str,  # normalized field name (e.g., 'purchased')
+    conversion_field: str,
     segment_filter_fn=None,
     session_filters: dict = None,
     min_days: int = 0,
