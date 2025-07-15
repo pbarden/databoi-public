@@ -85,3 +85,5 @@ summary = df.groupby("week").agg(
 mde_results = databoi.mde_time_table(summary, total_weeks=6)
 print("Week-by-week MDEs:")
 print(mde_results["weekly_mdes"])
+
+(C) Copyright 2025 Paul Barden
