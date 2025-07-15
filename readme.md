@@ -1,80 +1,87 @@
 # 📊 databoi
 
-**`databoi`** is a modular, Python-based analytics library purpose-built for experimentation and customer behavior modeling. It supports robust, scalable workflows for A/B/n testing, multivariate experiments, Bayesian analysis, regression, clustering, retention modeling, and segmentation.
+**`databoi`** is a modular Python analytics toolkit for conversion rate optimization, behavioral modeling, and experiment analysis. It supports robust workflows for A/B/n testing, Bayesian and frequentist inference, segmentation, regression, and time-based customer analysis — all built for Python scripts, Jupyter notebooks, and CLI use without requiring a Django backend.
 
-`databoi` is designed to unify pre-test planning, in-test monitoring, and post-test evaluation using consistent inputs and composable statistical tools. It emphasizes operational analytics and is optimized for conversion-centric use cases.
-
----
-
-## 🔧 What It Does
-
-### Experiment Design & Power Planning
-- Calculate minimum detectable effects (MDEs)
-- Estimate duration needed for statistical confidence
-- Model power curves and thresholds
-
-### Statistical Testing
-- Frequentist Z-tests & Chi-squared tests
-- Bayesian posterior sampling & credible intervals
-- Sample ratio mismatch detection
-
-### Segment & Time-Based Modeling
-- Weekly summaries and time-to-significance forecasting
-- Segment-aware significance testing
-- Multi-week retention and conversion tracking
-
-### Behavioral & Customer Modeling
-- Linear regression on engagement and revenue drivers
-- K-Means clustering and customer segmentation
-- Cohort-based retention analysis
-
-### Attribution & Journey Analysis
-- Markov chain attribution estimation
-- Time-to-conversion distribution tracking
-- Channel path impact modeling
-
-### Predictive Targeting
-- Optimal channel prediction via Random Forests
-- High-value customer detection & similarity mapping
+`databoi` brings structure to operational analytics by unifying:
+- Pre-test planning (e.g., MDE and power calculations)
+- In-test monitoring (e.g., SRM checks, path analysis)
+- Post-test evaluation (e.g., Bayesian lifts, decision trees, cohort-based metrics)
 
 ---
 
-## 📁 Expected Input Format
+## 🔧 Capabilities
 
-All core modules expect a **normalized CSV** where each row represents a unique user per time period. The input data should match the following structure:
+### 📐 Experiment Design
+- Minimum detectable effect (MDE) estimation
+- Duration and sample size planning
+- Power curves over time
 
-### Required Columns
-- `user_id` – Unique ID per user  
-- `converted` – Binary conversion flag (`1` or `0`)  
-- `week` – Period identifier (e.g., `2024-W01`, `1`, `2`)
+### 🧪 Statistical Testing
+- Z-tests and Chi-squared tests
+- Bayesian posterior inference
+- Credible intervals and sampling
+- Sample ratio mismatch (SRM) checks
 
-### Optional Columns
-- `group` – A/B/n test label (`control`, `variant_a`, etc.)  
-- `spend`, `visits`, `sessions`, `age`, `past_purchases`  
-- `channel`, `device`, `region` — used for filtering or grouping
+### 🧭 Attribution & Path Modeling
+- First-order Markov attribution modeling
+- Conversion path analysis
+- Time-to-conversion estimation
 
-> Additional fields are supported and ignored unless specified in analysis calls.
+### 👥 Customer Segmentation
+- K-Means clustering of user cohorts
+- High-value customer detection
+- Similarity mapping via nearest neighbors
+
+### ⏱ Retention & Time Modeling
+- Weekly time-to-significance projections
+- Cohort-based retention curves
+- Time-to-conversion distributions
+
+### 📊 Predictive Modeling
+- Linear and logistic regression
+- Decision trees and boosted tree classifiers
+- Feature importance for targeting
 
 ---
 
-## ⚙️ Usage Example
+## 📁 Data Format
+
+Most modules accept either:
+- A single **pandas DataFrame**
+- Or multiple DataFrames representing `persons`, `sessions`, and `events`
+
+Your data should be in a **normalized format**, where each row represents a user, session, or event depending on the analysis context.
+
+### Common Columns
+| Column         | Description                                  |
+|----------------|----------------------------------------------|
+| `user_id`      | Unique user identifier                       |
+| `converted`    | Binary flag for conversion (0 or 1)          |
+| `week`         | Time period indicator (e.g. `'2024-W03'`)    |
+| `group`        | A/B test group (e.g., `'control'`, `'A'`)    |
+| `channel`      | Acquisition or attribution channel           |
+| `value`        | Revenue or outcome value                     |
+| `timestamp`    | Event/session timestamp                      |
+
+> Custom fields are supported and passed through unchanged.
+
+---
+
+## ⚙️ Example Usage
 
 ```python
 import pandas as pd
 import databoi
 
-# Load your experiment data
+# Load experiment data
 df = pd.read_csv("experiment_data.csv")
 
-# Generate weekly MDE timeline
+# Example: calculate MDE over a 6-week test
 summary = df.groupby("week").agg(
     users=('user_id', 'count'),
     conversions=('converted', 'sum')
 ).reset_index()
 
-results = databoi.mde_time_table(summary, total_weeks=6)
-
-print("Week-by-week MDE values:")
-print(results["weekly_mdes"])
-
-(C) Copyright 2025 Paul Barden
+mde_results = databoi.mde_time_table(summary, total_weeks=6)
+print("Week-by-week MDEs:")
+print(mde_results["weekly_mdes"])
