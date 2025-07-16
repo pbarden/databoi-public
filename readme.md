@@ -1,6 +1,6 @@
 # 📊 databoi
 
-**`databoi`** is a modular Python analytics toolkit for conversion rate optimization, behavioral modeling, and experiment analysis. It supports robust workflows for A/B/n testing, Bayesian and frequentist inference, segmentation, regression, and time-based customer analysis — all built for Python scripts, Jupyter notebooks, and CLI use without requiring a Django backend.
+**`databoi`** is a modular Python analytics toolkit for conversion rate optimization, behavioral modeling, and experiment analysis. It supports robust workflows for A/B/n testing, Bayesian and frequentist inference, segmentation, regression, and time-based customer analysis.
 
 `databoi` brings structure to operational analytics by unifying:
 - Pre-test planning (e.g., MDE and power calculations)
